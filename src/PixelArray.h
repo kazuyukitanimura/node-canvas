@@ -16,6 +16,7 @@ class PixelArray: public node::ObjectWrap {
     static void Initialize(Handle<Object> target);
     static Handle<Value> New(const Arguments &args);
     static Handle<Value> GetLength(Local<String> prop, const AccessorInfo &info);
+    static Handle<Value> ToBuffer(const Arguments &args);
     inline int length(){ return _width * _height * 4; }
     inline int width(){ return _width; }
     inline int height(){ return _height; }

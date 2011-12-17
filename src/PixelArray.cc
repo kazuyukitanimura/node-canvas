@@ -8,6 +8,7 @@
 #include "PixelArray.h"
 #include <stdlib.h>
 #include <string.h>
+#include <node_buffer.h>
 
 Persistent<FunctionTemplate> PixelArray::constructor;
 
@@ -26,6 +27,7 @@ PixelArray::Initialize(Handle<Object> target) {
 
   // Prototype
   Local<ObjectTemplate> proto = constructor->InstanceTemplate();
+  NODE_SET_PROTOTYPE_METHOD(constructor, "toBuffer", ToBuffer);
   proto->SetAccessor(String::NewSymbol("length"), GetLength);
   target->Set(String::NewSymbol("CanvasPixelArray"), constructor->GetFunction());
 }
@@ -122,6 +124,19 @@ PixelArray::PixelArray(Canvas *canvas, int sx, int sy, int width, int height):
     }
     dst += dstStride;
   }
+}
+
+/*
+ * Convert CanvasPixelArray data to a node::Buffer
+ */
+
+Handle<Value>
+PixelArray::ToBuffer(const Arguments &args) {
+  PixelArray *pixelArray = ObjectWrap::Unwrap<PixelArray>(args.This());
+  size_t len = (size_t)(pixelArray->length());
+  char *data = (char *)(pixelArray->data());
+  Buffer *buf = Buffer::New(data, len);
+  return buf->handle_;
 }
 
 /*
