@@ -132,7 +132,7 @@ PixelArray::PixelArray(Canvas *canvas, int sx, int sy, int width, int height):
 
 Handle<Value>
 PixelArray::ToBuffer(const Arguments &args) {
-  PixelArray *pixelArray = ObjectWrap::Unwrap<PixelArray>(info.This());
+  PixelArray *pixelArray = ObjectWrap::Unwrap<PixelArray>(args.This());
   size_t len = (size_t)(pixelArray->length());
   char *data = (char *)(pixelArray->data());
   Buffer *buf = Buffer::New(data, len);
