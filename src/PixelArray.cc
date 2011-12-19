@@ -132,11 +132,14 @@ PixelArray::PixelArray(Canvas *canvas, int sx, int sy, int width, int height):
 
 Handle<Value>
 PixelArray::ToBuffer(const Arguments &args) {
+  HandleScope scope;
   PixelArray *pixelArray = ObjectWrap::Unwrap<PixelArray>(args.This());
   size_t len = (size_t)(pixelArray->length());
   char *data = (char *)(pixelArray->data());
-  Buffer *buf = Buffer::New(data, len);
-  return buf->handle_;
+  Local<String> string = String::New(data, len);
+  //Buffer *buf = Buffer::New(data, len);
+  //return buf->handle_;
+  return scope.Close(string);
 }
 
 /*
