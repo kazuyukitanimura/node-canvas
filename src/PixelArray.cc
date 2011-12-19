@@ -8,7 +8,6 @@
 #include "PixelArray.h"
 #include <stdlib.h>
 #include <string.h>
-#include <node.h>
 #include <node_buffer.h>
 #include <v8.h>
 
@@ -138,7 +137,7 @@ PixelArray::ToBuffer(const Arguments &args) {
   PixelArray *pixelArray = ObjectWrap::Unwrap<PixelArray>(args.This());
   size_t len = (size_t)(pixelArray->length());
   char *data = (char *)(pixelArray->data());
-  Local<String> b = Encode(data, len, BINARY);
+  Local<Value> b = Encode(data, len, BINARY);
   //Buffer *buf = Buffer::New(data, len);
   //return buf->handle_;
   return scope.Close(b);
